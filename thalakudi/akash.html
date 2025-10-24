@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Theme Customizer</title>
+  <style>
+    :root {
+      --bg-color: #ffffff;
+      --text-color: #222222;
+      --font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: var(--font-family);
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    .customizer {
+      background: #f7f7f7;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+    }
+
+    .customizer label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+
+    .customizer input,
+    .customizer select,
+    .customizer button {
+      width: 100%;
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+    }
+
+    .preview-box {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      background: #fff;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    }
+
+    .save-btn {
+      background: #0078ff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .save-btn:hover {
+      background: #005ecb;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎨 Theme Customizer</h1>
+
+  <div class="customizer">
+    <label>Background Color:</label>
+    <input type="color" id="bgColor">
+
+    <label>Text Color:</label>
+    <input type="color" id="textColor">
+
+    <label>Font Style:</label>
+    <select id="fontFamily">
+      <option value="'Poppins', sans-serif">Poppins</option>
+      <option value="'Roboto', sans-serif">Roboto</option>
+      <option value="'Courier New', monospace">Courier New</option>
+      <option value="'Times New Roman', serif">Times New Roman</option>
+    </select>
+
+    <button class="save-btn" id="saveTheme">Save Theme</button>
+  </div>
+
+  <div class="preview-box">
+    <h2>Preview Area</h2>
+    <p>This text updates live as you change settings!</p>
+  </div>
+
+  <script>
+    const root = document.documentElement;
+    const bgPicker = document.getElementById('bgColor');
+    const textPicker = document.getElementById('textColor');
+    const fontSelector = document.getElementById('fontFamily');
+    const saveBtn = document.getElementById('saveTheme');
+
+    // Load saved theme
+    window.onload = () => {
+      const savedTheme = JSON.parse(localStorage.getItem('customTheme'));
+      if (savedTheme) {
+        root.style.setProperty('--bg-color', savedTheme.bg);
+        root.style.setProperty('--text-color', savedTheme.text);
+        root.style.setProperty('--font-family', savedTheme.font);
+        bgPicker.value = savedTheme.bg;
+        textPicker.value = savedTheme.text;
+        fontSelector.value = savedTheme.font;
+      }
+    };
+
+    // Live update
+    bgPicker.addEventListener('input', e => {
+      root.style.setProperty('--bg-color', e.target.value);
+    });
+
+    textPicker.addEventListener('input', e => {
+      root.style.setProperty('--text-color', e.target.value);
+    });
+
+    fontSelector.addEventListener('change', e => {
+      root.style.setProperty('--font-family', e.target.value);
+    });
+
+    // Save theme
+    saveBtn.addEventListener('click', () => {
+      const theme = {
+        bg: bgPicker.value,
+        text: textPicker.value,
+        font: fontSelector.value
+      };
+      localStorage.setItem('customTheme', JSON.stringify(theme));
+      alert('🎉 Theme saved! It will stay even after you reload the page.');
+    });
+  </script>
+
+</body>
+</html>
